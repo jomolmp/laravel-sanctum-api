@@ -1,6 +1,8 @@
 <?php
 
+
 namespace App\Http\Controllers;
+use App\Models\Task;
 
 use Illuminate\Http\Request;
 
@@ -13,7 +15,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
+        return Task::all();
     }
 
     /**
@@ -24,7 +26,12 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request -> validate([
+            'name' => 'required',
+            'description' => 'required',
+            'status' => 'required'
+        ]);
+        return Task::create($request->all());
     }
 
     /**
@@ -35,7 +42,7 @@ class TaskController extends Controller
      */
     public function show($id)
     {
-        //
+        return Task::find($id);
     }
 
     /**
@@ -47,7 +54,9 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $task=Task::find($id);
+        $task->update($request->all());
+        return $task;
     }
 
     /**
@@ -58,6 +67,16 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return Task::destroy($id);
+    }
+     /**
+     * search for task by name
+     *
+     * @param  int  $name
+     * @return \Illuminate\Http\Response
+     */
+    public function search($name)
+    {
+        return Task::where('name','like','%'.$name.'%')->get();
     }
 }

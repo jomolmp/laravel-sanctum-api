@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Product;
+
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -62,7 +63,7 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage
      *
-     * @param  int  $name
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
