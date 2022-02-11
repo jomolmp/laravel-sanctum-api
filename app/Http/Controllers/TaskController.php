@@ -1,11 +1,12 @@
 <?php
 
+
 namespace App\Http\Controllers;
-use App\Models\Product;
+use App\Models\Task;
 
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +15,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
-        return Product::all();
+        return Task::all();
     }
 
     /**
@@ -28,11 +28,10 @@ class ProductController extends Controller
     {
         $request -> validate([
             'name' => 'required',
-            'slug' => 'required',
-            'price' => 'required'
+            'description' => 'required',
+            'status' => 'required'
         ]);
-        return Product::create($request->all());
-        
+        return Task::create($request->all());
     }
 
     /**
@@ -43,7 +42,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        return Product::find($id);
+        return Task::find($id);
     }
 
     /**
@@ -55,29 +54,29 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product = Product::find($id);
-        $product->update($request->all());
-        return $product;
+        $task=Task::find($id);
+        $task->update($request->all());
+        return $task;
     }
 
     /**
-     * Remove the specified resource from storage
+     * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        return Product::destroy($id);
+        return Task::destroy($id);
     }
      /**
-     * search for a name
+     * search for task by name
      *
      * @param  int  $name
      * @return \Illuminate\Http\Response
      */
     public function search($name)
     {
-        return Product::where('name','like','%'.$name.'%')->get();
+        return Task::where('name','like','%'.$name.'%')->get();
     }
 }
