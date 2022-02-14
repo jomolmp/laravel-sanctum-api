@@ -1,21 +1,29 @@
 <?php
 
-
 namespace App\Http\Controllers;
-use App\Models\Task;
 
+use App\Models\Task;
+use App\Repositories\Interfaces\TaskRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class TaskController extends Controller
 {
+    private TaskRepositoryInterface $taskRepository;
+
+    public function __construct(TaskRepositoryInterface $taskRepository)
+    {
+        $this->taskRepository = $taskRepository;
+    }
+
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): Response
     {
-        return Task::all();
+        $tasks = $this->taskRepository->getAllTasks();
+
+        return new Response($tasks);
     }
 
     /**
