@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskCreateRequest;
 use App\Models\Task;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
 use Illuminate\Http\Request;
@@ -29,17 +30,13 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TaskCreateRequest $request): Response
     {
-        $request -> validate([
-            'name' => 'required',
-            'description' => 'required',
-            'status' => 'required'
-        ]);
-        return Task::create($request->all());
+        $task = $this->taskRepository->createTask($request->all());
+
+        return new Response($task->toArray(), 201);
     }
 
     /**
@@ -75,7 +72,9 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        return Task::destroy($id);
+        Task::destroy($id);
+
+        return new Response([], 204);
     }
      /**
      * search for task by name
