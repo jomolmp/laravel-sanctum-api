@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
+//use App\Repositories\TaskRepositories;
 
 class TaskControllerTest extends TestCase
 {
@@ -15,6 +16,7 @@ class TaskControllerTest extends TestCase
 
     public function test_task_index()
     {
+        $this->withoutExceptionHandling();
        $task=new Task;
        $task->setAttribute('name','task1');
        $task->setAttribute('description','this is task1');
@@ -105,7 +107,7 @@ class TaskControllerTest extends TestCase
         $tas->setAttribute('status','completed');
         $tas->save();
 
-       $response=$this->json('GET','api/tasks/task 1');
+       $response=$this->json('GET','api/tasks');
        $response->assertStatus(200);
     }
 
@@ -123,16 +125,11 @@ class TaskControllerTest extends TestCase
         $tas->setAttribute('description','this is task 1');
         $tas->setAttribute('status','completed');
         $tas->save();
-        
-        $deleted=[
-            'name'=>'task 1',
-            'description'=>'this is task 1',
-            'name'=>'completed',
-        ];
 
         $uri=\sprintf('%s/%s',self::URI,$tas->getAttribute('id'));
+
         $response=$this->json('DELETE',$uri);
         $response->assertStatus(200);
-        //$this->assertSoftDeleted('tasks',$deleted);
+        $this->assertDatabaseMissing('tasks',['id'=> $tas->getAttribute('id')]);
     }
 }

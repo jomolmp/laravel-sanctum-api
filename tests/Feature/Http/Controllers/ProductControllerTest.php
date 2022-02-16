@@ -105,15 +105,12 @@ class ProductControllerTest extends TestCase
         $user -> setAttribute('password', '123456');
         $user->save();
         Sanctum::actingAs($user);
-
         $pro1=new Product();
         $pro1->setAttribute('name','iphone 12');
         $pro1->setAttribute('slug','iphone-12');
         $pro1->setAttribute('description','this is iphone12');
         $pro1->setAttribute('price','300.99');
         $pro1->save();    
-        
-        
         $uri=\sprintf('%s/%s',self::URI,$pro1->getAttribute('id'));
         $response=$this->json('PUT',$uri,[
             'name'=>'iphone 12',
@@ -149,10 +146,11 @@ class ProductControllerTest extends TestCase
         $pro->setAttribute('price','200');
         $pro->save();
 
-        $uri = \sprintf('%s/%s',self::URI,$pro->getAttribute('id'));
-        $response=$this->json('GET',$uri);
-        $response->assertStatus(200)
-            ->assertJson($pro->toArray());
+        $uri=\sprintf('%s/%s',self::URI,$pro->getAttribute('id'));
+
+        $response=$this->json('DELETE',$uri);
+        $response->assertStatus(200);
+        $this->assertDatabaseMissing('products',['id'=> $pro->getAttribute('id')]);
         
     }
     public function test_login():void
