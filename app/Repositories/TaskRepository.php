@@ -8,7 +8,7 @@ use App\Models\Task;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
 use Illuminate\Http\Client\Events\ResponseReceived;
 
-class TaskRepository implements TaskRepositoryInterface
+class TaskRepositories implements TaskRepositoryInterface
 {
     public function getAllTasks():Collection
     {
@@ -32,24 +32,20 @@ class TaskRepository implements TaskRepositoryInterface
         $task->setAttribute('description', $data['description']);
         $task->setAttribute('status', $data['status']);
         $task->save();
-        return ($task);
+        return $task;
     }
 
     public function deleteTask($id):void
     {
         Task::destroy($id);
 
+        //return $task;
+         
     }
     
     public function showTask($id):Task
     {
        $task=Task::find($id); 
-       return $task;
-       
-    }
-    public function searchTask($name):Task
-    {
-       $task=Task::find($name); 
        return $task;
        
     }

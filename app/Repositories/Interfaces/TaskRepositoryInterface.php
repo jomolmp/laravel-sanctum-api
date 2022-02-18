@@ -12,6 +12,5 @@ interface TaskRepositoryInterface
     public function updateTask(array $data, $id):Task;
     public function deleteTask($id);
     public function showTask($id):Task;
-    public function searchTask($name):Task;
 }
 ?>
