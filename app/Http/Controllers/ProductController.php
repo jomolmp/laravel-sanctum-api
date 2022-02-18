@@ -2,24 +2,26 @@
 
 namespace App\Http\Controllers;
 use App\Models\Product;
-
+use App\Http\Requests\ProductCreateRequest;
+use App\Http\Requests\ProductUpdateRequest;
+use App\Repositories\Interfaces\ProductRepositoryInterface;
+use App\Repositories\Interfaces\TaskRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ProductController extends Controller
 {
-    public function index()
+    private ProductRepositoryInterface $productRepository;
+    public function __construct(ProductRepositoryInterface $productRepository)
     {
-        //
-        return Product::all();
+        $this->productRepository = $productRepository;
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function index():Response
+    {
+        $pro=$this->productRepository->getAllProducts();
+        return new Response($pro);
+    }
+    public function store(ProductCreateRequest $request):Response
     {
         
         $request -> validate([
@@ -27,53 +29,31 @@ class ProductController extends Controller
             'slug' => 'required',
             'price' => 'required'
         ]);
-        return Product::create($request->all());
+        $pro=$this->productRepository->createProduct($request->all());
+        return new Response($pro->toArray(),201);
         
     }
+    public function show($id):Response
+    {
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        return Product::find($id);
+        $pro=$this->productRepository->find_product_by_id($id);
+        return new Response($pro);
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(ProductUpdateRequest $request, $id):Response
     {
-        $product = Product::find($id);
-        $product->update($request->all());
-        return $product;
+        
+        $pro=$this->productRepository->updateProduct($request->all(),$id);
+        return new Response($pro->toArray(), 201);
     }
-
-    /**
-     * Remove the specified resource from storage
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy($id):void
     {
-        return Product::destroy($id);
+     $this->productRepository->deleteProduct($id);
     }
-     /**
-     * search for a name
-     *
-     * @param  int  $name
-     * @return \Illuminate\Http\Response
-     */
-    public function search($name)
+    
+    public function search($name):Response
     {
-        return Product::where('name','like','%'.$name.'%')->get();
+        
+        $pro=$this->productRepository->find_product_by_name($name);
+        return new Response($pro);
     }
 }
