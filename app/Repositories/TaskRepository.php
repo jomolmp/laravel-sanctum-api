@@ -1,21 +1,18 @@
 <?php
 declare(strict_types=1);
-
 namespace App\Repositories;
-
 use Illuminate\Support\Collection;
 use App\Models\Task;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
-use Illuminate\Http\Client\Events\ResponseReceived;
 
-class TaskRepositories implements TaskRepositoryInterface
+class TaskRepository implements TaskRepositoryInterface
 {
-    public function getAllTasks():Collection
+    public function GetAllTask():Collection
     {
         return Task::all();
     }
 
-    public function createTask(array $data):Task
+    public function CreateTask(array $data):Task
     {
         $task = new Task();
         $task->setAttribute('name', $data['name']);
@@ -25,7 +22,7 @@ class TaskRepositories implements TaskRepositoryInterface
         return $task;
     }
 
-    public function updateTask(array $data,$id):Task
+    public function UpdateTask(array $data,$id):Task
     {
         $task=Task::find($id);
         $task->setAttribute('name', $data['name']);
@@ -35,21 +32,21 @@ class TaskRepositories implements TaskRepositoryInterface
         return $task;
     }
 
-    public function deleteTask($id):void
+    public function DeleteTask($id):void
     {
         Task::destroy($id);
-
-        //return $task;
-         
     }
     
-    public function showTask($id):Task
+    public function ShowTaskById($id):Task
     {
        $task=Task::find($id); 
        return $task;
-       
-    }
+    }  
     
+    public function searchTaskByName($name): Task
+    {
+        $task=Task::find($name);
+        return $task;
+    }
 }
-
 ?>
