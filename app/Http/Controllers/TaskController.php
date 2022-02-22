@@ -1,11 +1,9 @@
 <?php
 namespace App\Http\Controllers;
-
 use App\Http\Requests\TaskCreateRequest;
 use App\Http\Requests\TaskUpdateRequest;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
 use Illuminate\Http\Response;
-
 class TaskController extends Controller
 {
     private TaskRepositoryInterface $taskRepository;

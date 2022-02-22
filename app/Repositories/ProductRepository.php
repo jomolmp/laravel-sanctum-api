@@ -4,7 +4,6 @@ namespace App\Repositories;
 use Illuminate\Support\Collection;
 use App\Models\Product;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
-
 class ProductRepository implements ProductRepositoryInterface
 {
     public function GetAllProduct():Collection

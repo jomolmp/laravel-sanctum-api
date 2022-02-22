@@ -1,9 +1,7 @@
 <?php
 namespace App\Repositories\Interfaces;
 use App\Models\Product;
-use GuzzleHttp\Handler\Proxy;
 use Illuminate\Support\Collection;
-
 interface ProductRepositoryInterface
 {
     public function GetAllProduct(): Collection;
@@ -13,4 +11,3 @@ interface ProductRepositoryInterface
     public function ShowProductById($id):Product;
     public function SearchProductByName($name):Product;
 }
-?>

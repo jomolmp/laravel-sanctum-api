@@ -1,12 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
-
 class AuthController extends Controller
 {
     public function register(request $request)
@@ -47,9 +44,6 @@ class AuthController extends Controller
                 'message' => "Bad creds"
             ], 401);
         }
-
-
-
         $token = $user->createToken('myapptoken')->plainTextToken;
         $response = [
             'user' => $user,
@@ -66,3 +60,4 @@ class AuthController extends Controller
         
          }
 }
+

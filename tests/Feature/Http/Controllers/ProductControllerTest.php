@@ -1,12 +1,10 @@
 <?php
-
 namespace Tests\Feature\Http\Controllers;
 use App\Models\User;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
-
 class ProductControllerTest extends TestCase
 {
     use RefreshDatabase;
@@ -187,7 +185,6 @@ class ProductControllerTest extends TestCase
              ->assertJsonFragment($expected);
     }
 
-
     public function testDeleteProduct():void
     {
         $this->withoutExceptionHandling();
@@ -236,4 +233,3 @@ class ProductControllerTest extends TestCase
         $response->assertStatus(200);
     }
 }
-?>

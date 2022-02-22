@@ -4,7 +4,6 @@ namespace App\Repositories;
 use Illuminate\Support\Collection;
 use App\Models\Task;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
-
 class TaskRepository implements TaskRepositoryInterface
 {
     public function GetAllTask():Collection

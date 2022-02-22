@@ -1,12 +1,10 @@
 <?php
-
 namespace Tests\Feature\HTTP\Controllers;
 use App\Models\User;
 use App\Models\Task;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
-
 class TaskControllerTest extends TestCase
 {
     use RefreshDatabase;
@@ -167,4 +165,3 @@ class TaskControllerTest extends TestCase
      'id'=> $task->getAttribute('id')]);
     }
 }
-?>

@@ -2,7 +2,6 @@
 namespace App\Repositories\Interfaces;
 use App\Models\Task;
 use Illuminate\Support\Collection;
-
 interface TaskRepositoryInterface
 {
     public function GetAllTask(): Collection;
@@ -12,4 +11,3 @@ interface TaskRepositoryInterface
     public function ShowTaskById($id):Task;
     public function searchTaskByName($name):Task;
 }
-?>

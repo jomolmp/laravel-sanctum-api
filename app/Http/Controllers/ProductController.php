@@ -1,11 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 use Illuminate\Http\Response;
 use App\Http\Requests\ProductCreateRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
-
 class ProductController extends Controller
 {
     private ProductRepositoryInterface $productRepository;
@@ -50,4 +48,3 @@ class ProductController extends Controller
         return new Response($product);
     }
 }
-?>
