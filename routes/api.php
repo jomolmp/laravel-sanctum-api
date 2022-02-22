@@ -30,17 +30,18 @@ Route::get('/tasks/{id}', [TaskController::class, 'show']);
 Route::get('/tasks/search/{name}', [TaskController::class, 'search']);
 
 
-//Protected routes
-Route::group(['middleware' => ['auth:sanctum']], function(){
-Route::post('/products',[ProductController::class, 'store']);
-Route::put('/products/{id}',[ProductController::class, 'update']);
-Route::delete('/products/{id}',[ProductController::class, 'destroy']);
-Route::post('/logout',[AuthController::class, 'logout']);
+//Protected routes fir products
+Route::group(['middleware' => ['auth:sanctum']], function()
+{  
+    Route::post('/products',[ProductController::class, 'store']);
+    Route::put('/products/{id}',[ProductController::class, 'update']);
+    Route::delete('/products/{id}',[ProductController::class, 'destroy']);
+    Route::post('/logout',[AuthController::class, 'logout']);
 
  //Protected routes for task   
-Route::post('/tasks',[TaskController::class, 'store']);
-Route::put('/tasks/{id}',[TaskController::class, 'update']);
-Route::delete('/tasks/{id}',[TaskController::class, 'destroy']);
+    Route::post('/tasks',[TaskController::class, 'store']);
+    Route::put('/tasks/{id}',[TaskController::class, 'update']);
+    Route::delete('/tasks/{id}',[TaskController::class, 'destroy']);
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

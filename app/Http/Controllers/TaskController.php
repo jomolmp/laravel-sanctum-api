@@ -1,82 +1,49 @@
 <?php
-
-
 namespace App\Http\Controllers;
-use App\Models\Task;
-
-use Illuminate\Http\Request;
-
+use App\Http\Requests\TaskCreateRequest;
+use App\Http\Requests\TaskUpdateRequest;
+use App\Repositories\Interfaces\TaskRepositoryInterface;
+use Illuminate\Http\Response;
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    private TaskRepositoryInterface $taskRepository;
+    public function __construct(TaskRepositoryInterface $taskRepository)
     {
-        return Task::all();
+        $this->taskRepository = $taskRepository;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function index():Response
     {
-        $request -> validate([
-            'name' => 'required',
-            'description' => 'required',
-            'status' => 'required'
-        ]);
-        return Task::create($request->all());
+        $tasks=$this->taskRepository->GetAllTask();
+        return new Response($tasks);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function store(TaskCreateRequest $request):Response
     {
-        return Task::find($id);
+       $tasks=$this->taskRepository->CreateTask($request->all());
+       return new Response($tasks->toArray(),201);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function show($id):Response
     {
-        $task=Task::find($id);
-        $task->update($request->all());
-        return $task;
+        $tasks=$this->taskRepository->ShowTaskByID($id);
+        return new Response($tasks);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function update(TaskUpdateRequest $request, $id):Response
+    {
+        $tasks=$this->taskRepository->UpdateTask($request->all(),$id);
+        return new Response($tasks->toArray(),201);
+    }
+
     public function destroy($id)
     {
-        return Task::destroy($id);
+        $this->taskRepository->DeleteTask($id);    
     }
-     /**
-     * search for task by name
-     *
-     * @param  int  $name
-     * @return \Illuminate\Http\Response
-     */
-    public function search($name)
+   
+    public function search($name):Response
     {
-        return Task::where('name','like','%'.$name.'%')->get();
+        $task=$this->taskRepository->SearchTaskByName($name);
+        return new Response($task);
     }
 }

@@ -20,13 +20,15 @@
         "nunomaduro/collision": "^5.10",
         "phpunit/phpunit": "^9.5.10"
     },
-    "autoload": {
+   
+     "autoload": {
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }
     },
+
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
