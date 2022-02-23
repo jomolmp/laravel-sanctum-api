@@ -24,6 +24,7 @@ class TaskControllerTest extends TestCase
 
     public function testCreateTask():void
     {
+        $this->withoutExceptionHandling();
         $user=new User();
         $user->setAttribute('name','jo');
         $user->setAttribute('email','jo@gmail.con');
@@ -35,15 +36,45 @@ class TaskControllerTest extends TestCase
            'description'=>'this is task 1',
            'status'=>'completed'
         ]);
+        
         $expected=[
          'name'=>'task 1',
          'description'=>'this is task 1',
          'status'=>'completed'
         ];
+
         $response->assertStatus(201)
         ->assertJsonFragment($expected);
+        $latesttask = Task::latest()->first();
         $this->assertDatabaseHas('tasks',$expected);
+        $this->assertEquals($user->id, $latesttask->users_id);
     }
+
+    public function testRelationSuccessfullInCreateTask():void
+    {
+        $this->withoutExceptionHandling();
+        $user=new User();
+        $user->setAttribute('name','assa');
+        $user->setAttribute('email','assa@gmail.con');
+        $user->setAttribute('password','45657');
+        $user->save();
+        Sanctum::actingAs($user);
+        $response=$this->json('POST',self::URI,[
+           'name'=>'task 2',
+           'description'=>'this is task 2',
+           'status'=>'pending'
+        ]);
+        $expected=[
+            'name'=>'task 2',
+            'description'=>'this is task 2',
+            'status'=>'pending',
+            'users_id'=>$user->id
+           ];
+   
+           $response->assertStatus(201);
+          $this->assertDatabaseHas('tasks', $expected) ;     
+    }
+
     public function testTaskCreateFailsIfRequiredParametersAreMissing():void
     {
         $user=new User();

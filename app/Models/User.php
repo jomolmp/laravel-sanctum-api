@@ -24,6 +24,12 @@ class User extends Authenticatable
         'password',
     ];
 
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
+
+
     /**
      * The attributes that should be hidden for serialization.
      *

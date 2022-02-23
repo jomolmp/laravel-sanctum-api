@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 use Illuminate\Support\Collection;
 use App\Models\Task;
+use App\Models\User;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
 class TaskRepository implements TaskRepositoryInterface
 {
@@ -11,12 +12,13 @@ class TaskRepository implements TaskRepositoryInterface
         return Task::all();
     }
 
-    public function CreateTask(array $data):Task
+    public function CreateTask(array $data,User $user):Task
     {
         $task = new Task();
         $task->setAttribute('name', $data['name']);
         $task->setAttribute('description', $data['description']);
         $task->setAttribute('status', $data['status']);
+        $task->users()->associate($user);
         $task->save();
         return $task;
     }
@@ -48,4 +50,3 @@ class TaskRepository implements TaskRepositoryInterface
         return $task;
     }
 }
-?>

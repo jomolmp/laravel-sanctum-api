@@ -4,6 +4,9 @@ use App\Http\Requests\TaskCreateRequest;
 use App\Http\Requests\TaskUpdateRequest;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
 use Illuminate\Http\Response;
+use Laravel\Sanctum\Sanctum;
+use Illuminate\Support\Facades\Auth;
+
 class TaskController extends Controller
 {
     private TaskRepositoryInterface $taskRepository;
@@ -20,8 +23,9 @@ class TaskController extends Controller
 
     public function store(TaskCreateRequest $request):Response
     {
-       $tasks=$this->taskRepository->CreateTask($request->all());
-       return new Response($tasks->toArray(),201);
+        $user=Auth::user();
+        $tasks=$this->taskRepository->CreateTask($request->all(),$user);
+        return new Response($tasks->toArray(),201);
     }
 
     public function show($id):Response
