@@ -49,4 +49,12 @@ class TaskRepository implements TaskRepositoryInterface
         $task=Task::find($name);
         return $task;
     }
+
+    public function GetUserTask(User $user):Collection
+    {
+        $id=$user->getAttribute('id');
+        $task =Task::find('users_id',$id);
+        return $task; 
+    }
+
 }

@@ -4,6 +4,7 @@ use App\Models\User;
 use App\Models\Task;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
+use Nette\Utils\Arrays;
 use Tests\TestCase;
 class TaskControllerTest extends TestCase
 {
@@ -17,11 +18,59 @@ class TaskControllerTest extends TestCase
         $task->setAttribute('description','this is task1');
         $task->setAttribute('status','completed');
         $task->save();
-        $response=$this->json('GET',self::URI,);
+        $task1=new Task;
+        $task1->setAttribute('name','task1');
+        $task1->setAttribute('description','this is task1');
+        $task1->setAttribute('status','completed');
+        $task1->save();
+        $response=$this->json('GET',self::URI);
         $response->assertStatus(200);
-        $response->assertJson([$task->toArray()]);
+        $response->assertJson([$task->toArray(), $task1->toArray()]);
     }
 
+    public function testAuthUserFindTask():void
+    {
+        $this->withoutExceptionHandling();
+        $user=new User();
+        $user->setAttribute('name','jo');
+        $user->setAttribute('email','jo@gmail.com');
+        $user->setAttribute('password','123455');
+        $user->save();
+        $user2=new User();
+        $user2->setAttribute('name','john');
+        $user2->setAttribute('email','john@gmail.com');
+        $user2->setAttribute('password','123aa455');
+        $user2->save();
+        Sanctum::actingAs($user);
+        $task=new Task();
+        $task->setAttribute('name','task1');
+        $task->setAttribute('description','this is task1');
+        $task->setAttribute('status','pending');
+        $task->users()->associate($user);
+        $task->save();
+        $task2=new Task();
+        $task2->setAttribute('name','task2');
+        $task2->setAttribute('description','this is task2');
+        $task2->setAttribute('status','pending');
+        $task2->users()->associate($user);
+        $task2->save();
+        $response=$this->json('GET','api/tasks');
+        $response->assertStatus(200)
+        ->assertJsonFragment([
+            [
+                'name'=>'task1',
+                'description'=>'this is task1',
+                'status'=>'pending',
+                'users_id'=>$user->id
+            ],
+            [
+                'name'=>'task2',
+                'description'=>'this is task2',
+                'status'=>'pending',
+                'users_id'=>$user->id
+            ]
+         ]);
+        }
     public function testCreateTask():void
     {
         $this->withoutExceptionHandling();
@@ -45,9 +94,7 @@ class TaskControllerTest extends TestCase
 
         $response->assertStatus(201)
         ->assertJsonFragment($expected);
-        $latesttask = Task::latest()->first();
         $this->assertDatabaseHas('tasks',$expected);
-        $this->assertEquals($user->id, $latesttask->users_id);
     }
 
     public function testRelationSuccessfullInCreateTask():void
@@ -58,6 +105,13 @@ class TaskControllerTest extends TestCase
         $user->setAttribute('email','assa@gmail.con');
         $user->setAttribute('password','45657');
         $user->save();
+
+        $user1=new User();
+        $user1->setAttribute('name','jo');
+        $user1->setAttribute('email','jo@gmail.con');
+        $user1->setAttribute('password','65765757');
+        $user1->save();
+
         Sanctum::actingAs($user);
         $response=$this->json('POST',self::URI,[
            'name'=>'task 2',
@@ -70,9 +124,9 @@ class TaskControllerTest extends TestCase
             'status'=>'pending',
             'users_id'=>$user->id
            ];
-   
+           
            $response->assertStatus(201);
-          $this->assertDatabaseHas('tasks', $expected) ;     
+          $this->assertDatabaseHas('tasks', $expected) ;
     }
 
     public function testTaskCreateFailsIfRequiredParametersAreMissing():void

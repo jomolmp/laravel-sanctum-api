@@ -50,4 +50,11 @@ class TaskController extends Controller
         $task=$this->taskRepository->SearchTaskByName($name);
         return new Response($task);
     }
+    public function getusertask():Response
+    {
+        $user=Auth::user();
+        $task=$this->taskRepository->GetUserTask($user);
+        return new Response($task);
+    }
+    
 }

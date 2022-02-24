@@ -11,4 +11,5 @@ interface TaskRepositoryInterface
     public function DeleteTask($id);
     public function ShowTaskById($id):Task;
     public function searchTaskByName($name):Task;
+    public function GetUserTask(User $user):Collection;
 }
