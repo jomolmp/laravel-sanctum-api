@@ -42,19 +42,20 @@ class TaskController extends Controller
 
     public function destroy($id)
     {
-        $this->taskRepository->DeleteTask($id);    
+        $this->taskRepository->DeleteTask($id);
     }
-   
+
     public function search($name):Response
     {
         $task=$this->taskRepository->SearchTaskByName($name);
         return new Response($task);
     }
-    public function getusertask():Response
+
+    public function getUserTask():Response
     {
         $user=Auth::user();
         $task=$this->taskRepository->GetUserTask($user);
         return new Response($task);
     }
-    
+
 }

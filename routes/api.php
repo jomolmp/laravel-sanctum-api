@@ -32,17 +32,17 @@ Route::get('/tasks/search/{name}', [TaskController::class, 'search']);
 
 //Protected routes fir products
 Route::group(['middleware' => ['auth:sanctum']], function()
-{  
+{
     Route::post('/products',[ProductController::class, 'store']);
     Route::put('/products/{id}',[ProductController::class, 'update']);
     Route::delete('/products/{id}',[ProductController::class, 'destroy']);
     Route::post('/logout',[AuthController::class, 'logout']);
 
- //Protected routes for task   
+ //Protected routes for task
     Route::post('/tasks',[TaskController::class, 'store']);
     Route::put('/tasks/{id}',[TaskController::class, 'update']);
     Route::delete('/tasks/{id}',[TaskController::class, 'destroy']);
-    Route::get('/tasks',[TaskController::class, 'getusertask']);
+    Route::get('/user-tasks',[TaskController::class, 'getUserTask']);
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

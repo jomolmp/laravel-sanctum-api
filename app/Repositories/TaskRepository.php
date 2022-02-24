@@ -18,7 +18,7 @@ class TaskRepository implements TaskRepositoryInterface
         $task->setAttribute('name', $data['name']);
         $task->setAttribute('description', $data['description']);
         $task->setAttribute('status', $data['status']);
-        $task->users()->associate($user);
+        $task->user()->associate($user);
         $task->save();
         return $task;
     }
@@ -37,24 +37,24 @@ class TaskRepository implements TaskRepositoryInterface
     {
         Task::destroy($id);
     }
-    
+
     public function ShowTaskById($id):Task
     {
-       $task=Task::find($id); 
+       $task=Task::find($id);
        return $task;
-    }  
-    
+    }
+
     public function searchTaskByName($name): Task
     {
         $task=Task::find($name);
         return $task;
     }
 
-    public function GetUserTask(User $user):Collection
+    public function getUserTask(User $user):Collection
     {
         $id=$user->getAttribute('id');
-        $task =Task::find('users_id',$id);
-        return $task; 
+
+        return Task::where('user_id', '=', $id)->get();
     }
 
 }
