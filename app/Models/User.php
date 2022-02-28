@@ -24,6 +24,12 @@ class User extends Authenticatable
         'password',
     ];
 
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
+
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -42,4 +48,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function toArray()
+    {
+        return[
+            'user_id'=>$this->getAttribute('id')
+        ];
+    }
 }

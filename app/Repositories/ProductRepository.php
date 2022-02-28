@@ -50,4 +50,3 @@ class ProductRepository implements ProductRepositoryInterface
         return $product;
     }
 }
-?>
