@@ -20,4 +20,13 @@ class Task extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+    public function toArray()
+    {
+        return[
+            'name'=>$this->getAttribute('name'),
+            'description'=>$this->getAttribute('description'),
+            'status'=>$this->getAttribute('status'),
+            'user'=>$this->getRelationValue('user')
+        ];
+    }
 }

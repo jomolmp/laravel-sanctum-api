@@ -24,7 +24,7 @@ class TaskController extends Controller
     public function store(TaskCreateRequest $request):Response
     {
         $user=Auth::user();
-        $tasks=$this->taskRepository->CreateTask($request->all(),$user);
+        $tasks=$this->taskRepository->CreateTask($request->all(),$user);      
         return new Response($tasks->toArray(),201);
     }
 

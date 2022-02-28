@@ -58,19 +58,22 @@ class TaskControllerTest extends TestCase
         $task2->setAttribute('status','pending');
         $task2->user()->associate($user);
         $task2->save();
-
         $expected = [
             [
             'name'=>'task1',
             'description'=>'this is task1',
             'status'=>'pending',
-            'users_id'=>$user->id
+            'user'=>[
+                'user_id'=>$user->id
+            ]
             ],
             [
                 'name'=>'task2',
                 'description'=>'this is task2',
                 'status'=>'pending',
-                'users_id'=>$user->id
+                'user'=>[
+                    'user_id'=>$user->id
+                ]
             ]
         ];
 
@@ -131,7 +134,7 @@ class TaskControllerTest extends TestCase
             'name'=>'task 2',
             'description'=>'this is task 2',
             'status'=>'pending',
-            'users_id'=>$user->id
+            'user_id'=>$user->id
            ];
 
            $response->assertStatus(201);

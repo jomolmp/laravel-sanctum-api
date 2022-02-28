@@ -25,6 +25,7 @@ class TaskRepository implements TaskRepositoryInterface
 
     public function UpdateTask(array $data,$id):Task
     {
+        
         $task=Task::find($id);
         $task->setAttribute('name', $data['name']);
         $task->setAttribute('description', $data['description']);
@@ -55,6 +56,7 @@ class TaskRepository implements TaskRepositoryInterface
         $id=$user->getAttribute('id');
 
         return Task::where('user_id', '=', $id)->get();
+        
     }
 
 }
