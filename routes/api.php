@@ -2,6 +2,7 @@
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HealthCheckController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,7 +31,7 @@ Route::get('/tasks/{id}', [TaskController::class, 'show']);
 Route::get('/tasks/search/{name}', [TaskController::class, 'search']);
 
 
-//Protected routes fir products
+//Protected routes for products
 Route::group(['middleware' => ['auth:sanctum']], function()
 {
     Route::post('/products',[ProductController::class, 'store']);
@@ -44,7 +45,10 @@ Route::group(['middleware' => ['auth:sanctum']], function()
     Route::delete('/tasks/{id}',[TaskController::class, 'destroy']);
     Route::get('/user-tasks',[TaskController::class, 'getUserTask']);
 });
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+    
+    Route::middleware('auth:api')->get('/user', function (Request $request) 
+    {
+        return $request->user();
 });
+
+    Route::get('/health-check',[HealthCheckController::class, 'healthcheck'])->middleware('headercheck');

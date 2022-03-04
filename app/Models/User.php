@@ -51,7 +51,9 @@ class User extends Authenticatable
     public function toArray()
     {
         return[
-            'user_id'=>$this->getAttribute('id')
+            'user_id'=>$this->getAttribute('id'),
+            'name'=>$this->getAttribute('name'),
+            'email'=>$this->getAttribute('email')
         ];
     }
 }
