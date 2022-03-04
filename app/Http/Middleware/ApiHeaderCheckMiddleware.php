@@ -20,10 +20,10 @@ class ApiHeaderCheckMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $header = config('apisecret.api_secret_key');
-        if($request->hasHeader('api_secret_key'))
+        $header = config('apisecret.api-secret-key');
+        if($request->hasHeader('api-secret-key'))
         {      
-            if($request->header('api_secret_key')===$header)
+            if($request->header('api-secret-key')===$header)
             {
                 return $next($request);
             }

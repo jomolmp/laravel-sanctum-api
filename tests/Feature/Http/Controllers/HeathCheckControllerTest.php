@@ -9,10 +9,10 @@ class HealthCheckControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $header = [
-            'api_secret_key'=>'apisecretkey'
+            'api-secret-key'=>'apisecretkey'
         ];
         $response=$this->json('GET','api/health-check',[],$header);
-       $response->assertJsonFragment(['api-secret-key'=>['apisecretkey']]);
-        
+        $response->assertStatus(200);
+        $response->assertJsonFragment(['api-secret-key'=>['apisecretkey']]);
     }
 }
