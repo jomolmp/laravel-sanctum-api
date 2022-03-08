@@ -9,9 +9,6 @@ class HealthCheckController extends Controller
 {
     public function healthcheck(Request $request):Response
     {
-        $header = $request->header();
-
-         return new Response($header);
-         
+        return new Response("Health CheckController Successfull");
     }
 }

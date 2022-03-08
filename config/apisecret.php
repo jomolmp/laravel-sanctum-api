@@ -1,4 +1,5 @@
 <?php
+
 return [
-    'api-secret-key'=>'apisecretkey'
+    'api_secret_key'=>'apisecretkey'
 ];

@@ -50,5 +50,5 @@ Route::group(['middleware' => ['auth:sanctum']], function()
     {
         return $request->user();
 });
-
+//Route for header check in middleware
     Route::get('/health-check',[HealthCheckController::class, 'healthcheck'])->middleware('headercheck');
