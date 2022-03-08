@@ -2,6 +2,7 @@
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HealthCheckController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,20 +31,24 @@ Route::get('/tasks/{id}', [TaskController::class, 'show']);
 Route::get('/tasks/search/{name}', [TaskController::class, 'search']);
 
 
-//Protected routes fir products
+//Protected routes for products
 Route::group(['middleware' => ['auth:sanctum']], function()
-{  
+{
     Route::post('/products',[ProductController::class, 'store']);
     Route::put('/products/{id}',[ProductController::class, 'update']);
     Route::delete('/products/{id}',[ProductController::class, 'destroy']);
     Route::post('/logout',[AuthController::class, 'logout']);
 
- //Protected routes for task   
+ //Protected routes for task
     Route::post('/tasks',[TaskController::class, 'store']);
     Route::put('/tasks/{id}',[TaskController::class, 'update']);
     Route::delete('/tasks/{id}',[TaskController::class, 'destroy']);
+    Route::get('/user-tasks',[TaskController::class, 'getUserTask']);
 });
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+    
+    Route::middleware('auth:api')->get('/user', function (Request $request) 
+    {
+        return $request->user();
 });
+//Route for header check in middleware
+    Route::get('/health-check',[HealthCheckController::class, 'healthcheck'])->middleware('headercheck');
